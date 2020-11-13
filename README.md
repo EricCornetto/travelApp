@@ -1,2 +1,2 @@
-# travel-app
+# travelApp
 Mobile application for travel guides
