@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "914511677369",
+    "firebase_url": "https://travelapp-86794.firebaseio.com",
+    "project_id": "travelapp-86794",
+    "storage_bucket": "travelapp-86794.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:914511677369:android:9788fefc03957c974a1868",
+        "android_client_info": {
+          "package_name": "com.travelapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "914511677369-555vu0bg7i4n13f6tctgqnfos9mjklt3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBpygtnyEs8bysiinVNFBkY0WXS2Q6RYRg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "914511677369-555vu0bg7i4n13f6tctgqnfos9mjklt3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
