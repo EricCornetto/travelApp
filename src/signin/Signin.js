@@ -4,7 +4,7 @@ import { StyleSheet, TouchableWithoutFeedback, View, Image } from 'react-native'
 import { Layout, Text, Button, Input, Icon, CheckBox, } from '@ui-kitten/components';
 
 
-const Signin = () => {
+const Signin = ({navigation}) => {
     const [initializing, setInitializing] = useState(true);
     const [user, setUser] = useState();
     const [email, setEmail] = useState('');
@@ -51,9 +51,6 @@ const Signin = () => {
             console.log('User account signed in!');
         })
         .catch(error => {
-            if(error.code === 'auth/email-already-in-use'){
-                console.log('That email address is already in use!');
-            }
             if(error.code === 'auth/invalid-email') {
                 console.log('That email address is invalid!');
             }
@@ -90,7 +87,7 @@ const Signin = () => {
                         <Button style={styles.signin_button} accessoryRight={facebookIcon}></Button>
                     </View>
                     <View style={styles.dont_have_account_container}>
-                        <Text style={styles.dont_have_account_text}>Don't have an Account? <Text style={styles.signup_text}>Sign up</Text></Text>
+                        <Text style={styles.dont_have_account_text}>Don't have an Account? <Text style={styles.signup_text} onPress={() => navigation.navigate('Signup')} >Sign up</Text></Text>
                     </View>
                 </View>  
             </Layout>
@@ -98,9 +95,9 @@ const Signin = () => {
     }
 
     return (
-        <Layout>
+        <View>
 
-        </Layout>
+        </View>
     );
 }
 
@@ -118,8 +115,7 @@ const styles = StyleSheet.create({
     text: {
         color: '#FFFFFF',
         fontSize: 31,
-        fontWeight: 'bold',
-        fontFamily: 'sans-serif'
+        fontWeight: 'bold'
     },
     button: {
         backgroundColor: '#FFFFFF',
