@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import auth from '@react-native-firebase/auth';
-import { StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
-import { Layout, Text, Button, Input, Icon } from '@ui-kitten/components';
+import { StyleSheet, TouchableWithoutFeedback, View, Image } from 'react-native';
+import { Layout, Text, Button, Input, Icon, CheckBox, } from '@ui-kitten/components';
 
 
 const Signin = () => {
@@ -9,11 +9,24 @@ const Signin = () => {
     const [user, setUser] = useState();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [secureTextEntry, setSecureTextEntry] = useState(true)
+    const [secureTextEntry, setSecureTextEntry] = useState(true);
+    const [checked, setChecked] = useState(false);
 
 
-    const AlertIcon = (props) => (
-        <Icon  {...props} name='alert-circle-outline'/>
+    const emailIcon = (props) => (
+        <Icon  {...props} name='email'/>
+    );
+
+    const passwordIcon = (props) => (
+        <Icon {...props} name='lock' />
+    );
+
+    const googleIcon = (props) => (
+        <Image {...props} style={{width: 50, height: 50}} source={require('../asset/img/search.png')} />
+    );
+
+    const facebookIcon = (props) => (
+        <Image {...props} style={{width: 50, height: 50}} source={require('../asset/img/facebook.png')} />
     );
 
     const toggleSecureEntry = () => {
@@ -61,14 +74,24 @@ const Signin = () => {
             <Layout style={styles.container}>
                 <View style={styles.layout}>
                     <Text style={styles.text} >Sign In</Text>
-                    <Input style={styles.input} label={<Text style={styles.label}>Email Address</Text>} color onChangeText={(value) => setEmail(value)} />
+                    <Input style={styles.input} label={<Text style={styles.label}>Email Address</Text>} color onChangeText={(value) => setEmail(value)} 
+                    accessoryLeft={emailIcon} />
                     <Input style={styles.input} label={<Text style={styles.label}>Password</Text>} placeholder="place yout text" 
-                    accessoryRight={renderIcon} caption={<Text style={styles.label}>Should contain at least 8 symbols</Text>}
-                    captionIcon={AlertIcon} secureTextEntry={secureTextEntry} onChangeText={(value) => setPassword(value)}
-                    />
+                    accessoryRight={renderIcon} accessoryLeft={passwordIcon} secureTextEntry={secureTextEntry} onChangeText={(value) => setPassword(value)} />
+                    <Text style={styles.forgot_pass} >Forgot Password?</Text>
+                    <CheckBox  style={styles.checkbox} checked={checked} onChange={value => setChecked(value)}><Text style={styles.label}>Remember me</Text></CheckBox>
                     <Button style={styles.button} onPress={Login}>
                         <Text style={styles.login_text}>Login</Text>
                     </Button>
+                    <Text style={styles.text_or}>- OR -</Text>
+                    <Text style={styles.text_or}>Sign in With</Text>
+                    <View style={styles.signin_label}>
+                        <Button style={styles.signin_button} accessoryRight={googleIcon}></Button>
+                        <Button style={styles.signin_button} accessoryRight={facebookIcon}></Button>
+                    </View>
+                    <View style={styles.dont_have_account_container}>
+                        <Text style={styles.dont_have_account_text}>Don't have an Account? <Text style={styles.signup_text}>Sign up</Text></Text>
+                    </View>
                 </View>  
             </Layout>
         );
@@ -83,9 +106,9 @@ const Signin = () => {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 2,
+        flex: 1,
         backgroundColor: '#3588E7',
-        flexDirection: 'column'
+        flexDirection: 'column',
     },
     layout: {
         flex: 1,
@@ -95,11 +118,14 @@ const styles = StyleSheet.create({
     text: {
         color: '#FFFFFF',
         fontSize: 31,
+        fontWeight: 'bold',
+        fontFamily: 'sans-serif'
     },
     button: {
         backgroundColor: '#FFFFFF',
         width: 350,
-        marginTop: 10
+        marginTop: 10,
+        borderRadius: 100
     },
     login_text: {
         color: '#3588E7',
@@ -111,7 +137,47 @@ const styles = StyleSheet.create({
     label: {
         color: '#FFFFFF',
         fontSize: 13,
-        paddingBottom: 5
+        paddingBottom: 5,
+    },
+    forgot_pass: {
+        color: '#FFFFFF',
+        fontSize: 13,
+        paddingBottom: 5,
+        marginLeft: 240
+    },
+    checkbox: {
+        marginRight: 210,
+        paddingBottom: 5,
+    },
+    text_or: {
+        color: '#FFFFFF',
+        fontSize: 16,
+        paddingBottom: 5,
+        paddingTop: 10
+    },
+    signin_button: {
+        width: 70,
+        height: 70,
+        padding: 10,
+        borderRadius: 100,
+        backgroundColor: '#FFFFFF',
+        margin: 15
+    },
+    signin_label: {
+        flexDirection: 'row'
+    },
+    dont_have_account_container: {
+        flexDirection: 'row',
+        marginTop: 200
+    },
+    dont_have_account_text: {
+        color : '#FFFFFF',
+        fontSize: 13
+    },
+    signup_text: {
+        color: '#FFFFFF',
+        fontSize: 15,
+        fontWeight: 'bold'
     }
 })
 
