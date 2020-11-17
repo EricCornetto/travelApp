@@ -74,9 +74,9 @@ const Signin = () => {
             <Layout style={styles.container}>
                 <View style={styles.layout}>
                     <Text style={styles.text} >Sign In</Text>
-                    <Input style={styles.input} label={<Text style={styles.label}>Email Address</Text>} color onChangeText={(value) => setEmail(value)} 
+                    <Input style={styles.input} label={<Text style={styles.label}>Email</Text>} placeholder="Enter your Email" onChangeText={(value) => setEmail(value)} 
                     accessoryLeft={emailIcon} />
-                    <Input style={styles.input} label={<Text style={styles.label}>Password</Text>} placeholder="place yout text" 
+                    <Input style={styles.input} label={<Text style={styles.label}>Password</Text>} placeholder="Enter your Password" 
                     accessoryRight={renderIcon} accessoryLeft={passwordIcon} secureTextEntry={secureTextEntry} onChangeText={(value) => setPassword(value)} />
                     <Text style={styles.forgot_pass} >Forgot Password?</Text>
                     <CheckBox  style={styles.checkbox} checked={checked} onChange={value => setChecked(value)}><Text style={styles.label}>Remember me</Text></CheckBox>
@@ -133,6 +133,7 @@ const styles = StyleSheet.create({
     },
     input: {
         width: 350,
+        paddingTop: 10
     },
     label: {
         color: '#FFFFFF',
@@ -143,7 +144,8 @@ const styles = StyleSheet.create({
         color: '#FFFFFF',
         fontSize: 13,
         paddingBottom: 5,
-        marginLeft: 240
+        marginLeft: 240,
+        paddingTop: 5
     },
     checkbox: {
         marginRight: 210,
