@@ -96,7 +96,8 @@ const Signin = ({navigation}) => {
 
     return (
         <View>
-
+            <Text>Welcome {user.email}</Text>
+            <Button onPress={() => auth().signOut().then(() => console.log('User signed out!'))}>Sign out</Button>
         </View>
     );
 }
