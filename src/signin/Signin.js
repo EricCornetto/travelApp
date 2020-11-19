@@ -96,7 +96,7 @@ const Signin = ({navigation}) => {
     } 
 
     return(
-        <Layout onLayout={() => navigation.navigate('Home',{screen: 'Home', user_email:user.email})}>
+        <Layout onLayout={() => navigation.navigate('Home')}>
         </Layout>
     );
 
