@@ -10,9 +10,7 @@ import Settings from '../settings/Settings'
 
 const Drawer = createDrawerNavigator();
 
-const Home = ({route, navigation}) => {
-
-   const {user_email} = route.params;
+const Home = ({navigation}) => {
 
     function Logout(){
         auth().signOut()
