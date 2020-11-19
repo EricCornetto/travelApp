@@ -1,11 +1,12 @@
 import * as React from 'react';
 import Signin from '../travelApp/src/signin/Signin';
-import { ApplicationProvider, IconRegistry } from '@ui-kitten/components';
+import { ApplicationProvider, IconRegistry, Button } from '@ui-kitten/components';
 import  * as eva from '@eva-design/eva';
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
 import { createStackNavigator } from '@react-navigation/stack';
-import { NavigationContainer } from '@react-navigation/native'
+import { NavigationContainer } from '@react-navigation/native';
 import Signup from './src/signup/Signup';
+import Home from './src/home/Home';
 
 const Stack = createStackNavigator();
 
@@ -18,6 +19,7 @@ const App = () => {
       <Stack.Navigator initialRouteName="Signin">
         <Stack.Screen name='Signin' component={Signin}  options={{headerShown: false}}/>
         <Stack.Screen name='Signup' component={Signup}  options={{headerShown: false}}/>
+        <Stack.Screen name='Home' component={Home} options={{headerShown: false}}/>
       </Stack.Navigator>
       </NavigationContainer>
     </ApplicationProvider>

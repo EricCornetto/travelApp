@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import auth from '@react-native-firebase/auth';
 import { StyleSheet, TouchableWithoutFeedback, View, Image } from 'react-native';
-import { Layout, Text, Button, Input, Icon, CheckBox, } from '@ui-kitten/components';
+import { Layout, Text, Button, Input, Icon, CheckBox, Spinner } from '@ui-kitten/components';
+import Home from '../home/Home';
 
 
 const Signin = ({navigation}) => {
@@ -92,14 +93,14 @@ const Signin = ({navigation}) => {
                 </View>  
             </Layout>
         );
-    }
+    } 
 
-    return (
-        <View>
-            <Text>Welcome {user.email}</Text>
-            <Button onPress={() => auth().signOut().then(() => console.log('User signed out!'))}>Sign out</Button>
-        </View>
+    return(
+        <Layout onLayout={() => navigation.navigate('Home',{screen: 'Home', user_email:user.email})}>
+        </Layout>
     );
+
+    
 }
 
 const styles = StyleSheet.create({
@@ -107,6 +108,11 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#3588E7',
         flexDirection: 'column',
+    },
+    welcome_back: {
+        color: '#FFFFFF',
+        fontSize: 31,
+        fontWeight: 'bold'
     },
     layout: {
         flex: 1,

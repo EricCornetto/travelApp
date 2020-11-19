@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import auth from '@react-native-firebase/auth';
 import { Layout, Button, Input, Icon, } from '@ui-kitten/components';
 import { View, StyleSheet, Text, TouchableWithoutFeedback } from 'react-native';
@@ -34,7 +34,7 @@ const Signup = ({navigation}) => {
             auth().createUserWithEmailAndPassword(email,password)
             .then(() => {
                 console.log('User account creayed & signed in!');
-                navigation.navigate('Signin')
+                navigation.push('Signin');
             })
             .catch(error => {
                 if(error.code === 'auth/email-already-in-use') {
@@ -67,7 +67,7 @@ const Signup = ({navigation}) => {
                     <Text style={styles.register_text} onPress={Register}>Register</Text>
                 </Button>
                 <View style={styles.have_account_container}>
-                    <Text style={styles.have_account_text}>Have an Account ? <Text style={styles.signin_text} onPress={() => navigation.navigate('Signin')}>Sign in</Text></Text>
+                    <Text style={styles.have_account_text}>Have an Account ? <Text style={styles.signin_text} onPress={() => navigation.push('Signin')}>Sign in</Text></Text>
                 </View>
             </View>
         </Layout>
