@@ -20,7 +20,8 @@ const settings = {
     headerTitleStyle: {
         fontWeight: 'bold'
     },
-    title: "Settings"
+    title: "Settings",
+    headerLeft: null,
 }
 
 export default Settings;

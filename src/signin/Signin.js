@@ -50,6 +50,7 @@ const Signin = ({navigation}) => {
         auth().signInWithEmailAndPassword(email,password)
         .then(() => {
             console.log('User account signed in!');
+        
         })
         .catch(error => {
             if(error.code === 'auth/invalid-email') {
@@ -59,6 +60,7 @@ const Signin = ({navigation}) => {
             console.error(error)
         })
     }
+
 
     useEffect(() => {
         const subscriber = auth().onAuthStateChanged(OnAuthStateChanged);
@@ -96,7 +98,7 @@ const Signin = ({navigation}) => {
     } 
 
     return(
-        <Layout onLayout={() => navigation.navigate('Home',{screen: 'Home'})}>
+        <Layout onLayout={() => navigation.push('Home',{screen: 'Home'})}>
         </Layout>
     );
 
@@ -108,11 +110,6 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#3588E7',
         flexDirection: 'column',
-    },
-    welcome_back: {
-        color: '#FFFFFF',
-        fontSize: 31,
-        fontWeight: 'bold'
     },
     layout: {
         flex: 1,
