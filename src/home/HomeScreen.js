@@ -1,14 +1,20 @@
-import React, { useLayoutEffect } from 'react';
+import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import HomeDetails from '../home/HomeDetails';
+import { Icon, Avatar  } from '@ui-kitten/components';
+import auth from '@react-native-firebase/auth';
+import { TouchableOpacity } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { Button,  } from '@ui-kitten/components';
-import { Image } from 'react-native';
+import Profile from '../profile/Profile';
+
+
+var user = auth().currentUser;
 
 const StackNavigator = createStackNavigator();
 
 const HomeScreen = ({navigation}) => {
 
+    
 
     return(
         <StackNavigator.Navigator >
@@ -25,8 +31,7 @@ const settings =  {
     headerTitleStyle: {
         fontWeight: 'bold'
     },
-    headerTransparent: true,
-    headerLeft: null
+    headerShown: false
 }
 
 export default HomeScreen;

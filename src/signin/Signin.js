@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import auth from '@react-native-firebase/auth';
 import { StyleSheet, TouchableWithoutFeedback, View, Image } from 'react-native';
-import { Layout, Text, Button, Input, Icon, CheckBox, Spinner } from '@ui-kitten/components';
-import Home from '../home/Home';
+import { Layout, Text, Button, Input, Icon, CheckBox, } from '@ui-kitten/components';
+import { GoogleSignin } from '@react-native-community/google-signin';
 
 
 const Signin = ({navigation}) => {
+
     const [initializing, setInitializing] = useState(true);
     const [user, setUser] = useState();
     const [email, setEmail] = useState('');
@@ -61,6 +62,12 @@ const Signin = ({navigation}) => {
         })
     }
 
+    async function onGoogleButtonPress(){
+        const { idToken } = await GoogleSignin.signIn();
+        const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+        return auth().signInWithCredential(googleCredential);
+    }
+
 
     useEffect(() => {
         const subscriber = auth().onAuthStateChanged(OnAuthStateChanged);
@@ -86,7 +93,7 @@ const Signin = ({navigation}) => {
                     <Text style={styles.text_or}>- OR -</Text>
                     <Text style={styles.text_or}>Sign in With</Text>
                     <View style={styles.signin_label}>
-                        <Button style={styles.signin_button} accessoryRight={googleIcon}></Button>
+                        <Button style={styles.signin_button} onPress={onGoogleButtonPress} accessoryRight={googleIcon}></Button>
                         <Button style={styles.signin_button} accessoryRight={facebookIcon}></Button>
                     </View>
                     <View style={styles.dont_have_account_container}>
@@ -98,7 +105,7 @@ const Signin = ({navigation}) => {
     } 
 
     return(
-        <Layout onLayout={() => navigation.push('Home',{screen: 'Home'})}>
+        <Layout onLayout={() => navigation.push('Home',{screen: 'Home', })}>
         </Layout>
     );
 

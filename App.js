@@ -7,6 +7,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import Signup from './src/signup/Signup';
 import Home from './src/home/Home';
+import { ThemeProvider } from 'react-native-elements';
 
 const Stack = createStackNavigator();
 
@@ -15,6 +16,7 @@ const App = () => {
     <>
     <IconRegistry icons={EvaIconsPack} />
     <ApplicationProvider {...eva} theme={eva.light}>
+      <ThemeProvider>
       <NavigationContainer>
       <Stack.Navigator initialRouteName="Signin">
         <Stack.Screen name='Signin' component={Signin}  options={{headerShown: false}}/>
@@ -22,6 +24,7 @@ const App = () => {
         <Stack.Screen name='Home' component={Home} options={{headerShown: false}}/>
       </Stack.Navigator>
       </NavigationContainer>
+      </ThemeProvider>
     </ApplicationProvider>
     </>
   );
