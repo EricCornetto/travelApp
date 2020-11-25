@@ -1,17 +1,17 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { View, StyleSheet, ScrollView, TouchableOpacity, RefreshControl, ActivityIndicator, FlatList, Pressable } from 'react-native';
-import { Text, Layout, Divider, Avatar, Input, Icon, ViewPager, Button } from '@ui-kitten/components';
-import { Badge, Card, } from 'react-native-elements';
+import { View, StyleSheet, TouchableOpacity, ActivityIndicator, FlatList, } from 'react-native';
+import { Text, Divider, Avatar, Input, Icon,  Button, } from '@ui-kitten/components';
+import { Badge, Card, Tile, Rating } from 'react-native-elements';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
+import { PagerDotIndicator, IndicatorViewPager,  } from '@shankarmorwal/rn-viewpager';
 
 const HomeDetails = ({navigation}) => {
 
     var user = auth().currentUser;
     const [places, setPlaces] = useState([]);
+    const [mostPopular, setMostPopular] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [selectedIndex, setSelectedIndex] = useState(0);
-    const shouldLoadComponent = (index) => index === selectedIndex;
     const [, updateState] = useState();
     const [refreshing, setRefreshing] = useState(false);
 
@@ -19,7 +19,8 @@ const HomeDetails = ({navigation}) => {
         setRefreshing(true);
         updateState;
         wait(2000).then(() => setRefreshing(false));
-    })
+    });
+
 
     useEffect(() => {
         const subscriber = firestore()
@@ -41,17 +42,38 @@ const HomeDetails = ({navigation}) => {
         return () => subscriber();
     }, []);
 
+    useEffect(() => {
+        const subscriber = firestore()
+        .collection('places')
+        .where('rating', '==', 5)
+        .onSnapshot((querySnapshot) => {
+            const place = [];
+
+            querySnapshot.forEach(documentSnapshot => {
+                place.push({
+                    ...documentSnapshot.data(),
+                    key: documentSnapshot.id,
+                });
+            });
+
+            setMostPopular(place)
+            setLoading(false);
+        });
+
+        return () => subscriber();
+    }, []);
+
     if(loading) {
         return <ActivityIndicator />;
     }
 
 
+
     return(
-        <ScrollView refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }>
-        <Layout style={styles.layout}>
-           
+         
+                <FlatList  refreshing={refreshing} onRefresh={onRefresh}
+                data={places} ListHeaderComponent={
+                    <>
                 <View style={styles.container}>
                    <View style={styles.header}>
                         <Text style={styles.display_name}> Hai, {user.displayName}!     </Text>
@@ -69,22 +91,44 @@ const HomeDetails = ({navigation}) => {
 
                     <Input style={styles.input} accessoryLeft={searchIcon} placeholder="What would you like to discover?" />
                    
-                </View>
-
-               
+                    </View>
                     
+      
                 </View>
 
+                <View>
+                    <Text style={styles.hot_place_text}>Most Popular</Text>
+                    <Divider />
+                </View>
+                
+                <View style={styles.hot_place}>
+            
+                <IndicatorViewPager style={styles.pagerStyle}
+                indicator={
+                    <PagerDotIndicator pageCount={4} />
+                }>
 
-                <Divider />
-                <View style={styles.content}>
-                <ViewPager
-                selectedIndex={selectedIndex}
-                shouldLoadComponent={shouldLoadComponent}
-                onSelect={index => setSelectedIndex(index)}
-                >
-                <FlatList  refreshing={refreshing} onRefresh={onRefresh}
-                data={places}
+                
+                    {
+                        mostPopular.map((item,key) => (
+            
+                            <Tile key={key}
+                            imageSrc={{uri: item.photo}}
+                            title={item.title}
+                            >
+                            <View style={styles.rating_container}>
+                            <Rating readonly imageSize={18}  startingValue={item.rating} />
+                            </View>
+                            
+                            <Text style={styles.sub_header_text}>{item.sub_header}</Text>
+                            </Tile>
+                      
+                        ))
+                    }
+                    </IndicatorViewPager>
+                </View>
+                    </>
+                }
                 renderItem={({item}) => (
                        <Card containerStyle={styles.card}>
                            <Card.Title style={styles.text_header}>{item.title}</Card.Title>
@@ -95,14 +139,24 @@ const HomeDetails = ({navigation}) => {
                            </Text>
                            <Button style={styles.button}>Check Now!</Button>
                        </Card>
-                )}/>
-                </ViewPager>
-                </View>
+
+
+                  
+
+                    
+                )}
+                ListFooterComponent={
+                    <>
+
+                    <View>
+                        <Text>Footer</Text>
+                    </View>
+
+
+                    </>
+                }
                 
-               
-                
-        </Layout>
-        </ScrollView>
+                />   
     );
 }
 
@@ -117,22 +171,28 @@ const wait = (timeout) => {
 }
 
 const styles = StyleSheet.create({
-    layout: {
-        flex: 1,
-    },
     container: {
         flex: 1,
         justifyContent: 'space-evenly',
         alignItems: 'center',
         backgroundColor: '#3588E7',
-        borderBottomLeftRadius: 100,
         borderBottomRightRadius: 100,
+
+    },
+    hot_place_text: {
+        marginLeft: 10, 
+        marginTop: 30, 
+        fontWeight: 'bold', 
+        fontSize: 18,
     },
     content: {
         backgroundColor: '#FFFFFF',
         margin: 10,
         
     },
+    pagerStyle: {
+        height: 350
+      },
     display_name: {
         color: '#FFFFFF',
         marginTop:50,
@@ -178,7 +238,7 @@ const styles = StyleSheet.create({
         margin: 1,
         borderBottomRightRadius: 50,
         borderBottomLeftRadius: 50,
-        marginBottom: 10
+        margin: 20
       },
     button: {
         borderRadius: 100,
@@ -193,6 +253,19 @@ const styles = StyleSheet.create({
         fontSize: 18,
         margin: 10,
         textAlign: 'justify'
+    },
+    hot_place: {
+        justifyContent: 'center', 
+        backgroundColor: '#FFFFFF', 
+        marginTop: 10,
+        
+    },
+    rating_container: {
+        alignSelf: 'flex-start',
+        marginBottom: 10
+    },
+    sub_header_text: {
+        marginBottom: 20
     }
 })
 

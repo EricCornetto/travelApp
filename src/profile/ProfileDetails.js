@@ -289,9 +289,8 @@ const ProfileDetails = ({navigation}) => {
                         </Button>
                     </Layout>
                 </Popover>
-                
+
                 <Button style={styles.button} onPress={Logout} accessoryLeft={logoutIcon}>Logout</Button>
-                
             </View>
             <Divider />
 
