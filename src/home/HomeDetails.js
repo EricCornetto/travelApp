@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { View, StyleSheet, TouchableOpacity, ActivityIndicator, FlatList, } from 'react-native';
-import { Text, Divider, Avatar, Input, Icon,  Button, } from '@ui-kitten/components';
-import { Badge, Card, Tile, Rating } from 'react-native-elements';
+import { Text, Divider, Avatar, Input, Icon, Button } from '@ui-kitten/components';
+import { Badge,  Tile, Rating, Image } from 'react-native-elements';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import { PagerDotIndicator, IndicatorViewPager,  } from '@shankarmorwal/rn-viewpager';
@@ -14,12 +14,17 @@ const HomeDetails = ({navigation}) => {
     const [loading, setLoading] = useState(true);
     const [, updateState] = useState();
     const [refreshing, setRefreshing] = useState(false);
+    const [isWishlist, setIsWishList] = useState(false);
+
 
     const onRefresh = useCallback(() => {
         setRefreshing(true);
-        updateState;
+        updateState();
         wait(2000).then(() => setRefreshing(false));
     });
+
+
+  
 
 
     useEffect(() => {
@@ -42,6 +47,7 @@ const HomeDetails = ({navigation}) => {
         return () => subscriber();
     }, []);
 
+
     useEffect(() => {
         const subscriber = firestore()
         .collection('places')
@@ -63,6 +69,7 @@ const HomeDetails = ({navigation}) => {
         return () => subscriber();
     }, []);
 
+
     if(loading) {
         return <ActivityIndicator />;
     }
@@ -71,14 +78,14 @@ const HomeDetails = ({navigation}) => {
 
     return(
          
-                <FlatList  refreshing={refreshing} onRefresh={onRefresh}
+                <FlatList  refreshing={refreshing} onRefresh={onRefresh} 
                 data={places} ListHeaderComponent={
                     <>
                 <View style={styles.container}>
                    <View style={styles.header}>
                         <Text style={styles.display_name}> Hai, {user.displayName}!     </Text>
                         <TouchableOpacity onPress={(() => navigation.push('Home', {screen: 'Profile'}))}>
-                            <Avatar style={styles.avatar} source={{uri: user.photoURL}} />
+                            <Avatar style={styles.avatar} source={{uri: user.photoURL ? user.photoURL : 'https://firebasestorage.googleapis.com/v0/b/travelapp-86794.appspot.com/o/icons%2Fprofile.png?alt=media&token=57861e23-e813-4236-9cba-b2a127446d9f'}} />
                             <Badge status="success" containerStyle={{position: 'absolute', top: 45, right: 0}} />
                         </TouchableOpacity>
                         
@@ -112,7 +119,7 @@ const HomeDetails = ({navigation}) => {
                     {
                         mostPopular.map((item,key) => (
             
-                            <Tile key={key}
+                            <Tile key={key} onPress={() => navigation.push('PlaceDetails', {item: item})}
                             imageSrc={{uri: item.photo}}
                             title={item.title}
                             >
@@ -127,34 +134,44 @@ const HomeDetails = ({navigation}) => {
                     }
                     </IndicatorViewPager>
                 </View>
+
+                <View>
+                    <Text style={styles.hot_place_text}>Discovery</Text>
+                </View>
                     </>
                 }
                 renderItem={({item}) => (
-                       <Card containerStyle={styles.card}>
-                           <Card.Title style={styles.text_header}>{item.title}</Card.Title>
-                           <Card.Divider />
-                           <Card.Image source={{uri: item.photo}} />
-                           <Text style={styles.text_content}>
-                                {item.content}
-                           </Text>
-                           <Button style={styles.button}>Check Now!</Button>
-                       </Card>
+                   <View style={styles.discover_container}>
+                    <TouchableOpacity onPress={() => navigation.push('PlaceDetails', {item})}>
+                    <View style={styles.item_container}>
+                        <Image style={styles.item_image} source={{uri: item.photo}} />
+                        <View style={{flexDirection: 'column'}}>
+                            <View style={{flexDirection: 'row'}}>
+                                <Text style={styles.item_title}>{item.title}</Text>
+                                <Image style={styles.item_flag} source={{uri: item.flag}} />
+                            </View>
+
+                            <Text style={styles.sub_header}>{item.sub_header}</Text>
 
 
-                  
+                            <View style={{flexDirection: 'row'}}>
 
+                            <TouchableOpacity  >
+                            <Avatar style={styles.wishlist} 
+                            source={{uri: item.wishlist ? 'https://firebasestorage.googleapis.com/v0/b/travelapp-86794.appspot.com/o/icons%2Fheart.png?alt=media&token=368f4e5b-5139-4b54-b6c1-53d8f30d822c'
+                             : 'https://firebasestorage.googleapis.com/v0/b/travelapp-86794.appspot.com/o/icons%2Fheart-outline.png?alt=media&token=b2e167b5-a284-4f5f-851b-1ddf6f606f1d'}}
+                            />
+                            </TouchableOpacity>
+                            
+                            </View>
+                        </View>
+                        </View>
+                    
+                    </TouchableOpacity>
+                   
+                    </View>
                     
                 )}
-                ListFooterComponent={
-                    <>
-
-                    <View>
-                        <Text>Footer</Text>
-                    </View>
-
-
-                    </>
-                }
                 
                 />   
     );
@@ -171,6 +188,38 @@ const wait = (timeout) => {
 }
 
 const styles = StyleSheet.create({
+    sub_header: {
+        textAlign: 'justify', 
+        marginRight: 200, 
+        marginStart: 10
+    },
+    wishlist: {
+        width: 30, 
+        height: 30, 
+        marginLeft: 160
+    },
+    item_flag: {
+        width: 15, 
+        height: 15, 
+        marginLeft: 10,
+    },
+    item_title: {
+        marginLeft: 10, 
+        fontWeight: 'bold',
+    },
+    item_image: {
+        width: 180, 
+        height: 140
+    },
+    item_container: {
+        flexDirection: 'row', 
+        margin: 5,
+        
+    },
+    discover_container: {
+        backgroundColor: '#FFFFFF',
+        marginBottom: 5
+    },
     container: {
         flex: 1,
         justifyContent: 'space-evenly',
@@ -184,11 +233,6 @@ const styles = StyleSheet.create({
         marginTop: 30, 
         fontWeight: 'bold', 
         fontSize: 18,
-    },
-    content: {
-        backgroundColor: '#FFFFFF',
-        margin: 10,
-        
     },
     pagerStyle: {
         height: 350
@@ -233,26 +277,6 @@ const styles = StyleSheet.create({
         color: '#FFFFFF',
         fontSize: 50,
         fontWeight: 'bold'
-    },
-    card: {
-        margin: 1,
-        borderBottomRightRadius: 50,
-        borderBottomLeftRadius: 50,
-        margin: 20
-      },
-    button: {
-        borderRadius: 100,
-        backgroundColor: '#3588E7',
-        borderColor: '#3588E7',
-    },
-    text_header: {
-        fontWeight: 'bold',
-        fontSize: 22
-    },
-    text_content: {
-        fontSize: 18,
-        margin: 10,
-        textAlign: 'justify'
     },
     hot_place: {
         justifyContent: 'center', 

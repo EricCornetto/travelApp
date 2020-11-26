@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import auth from '@react-native-firebase/auth';
-import { StyleSheet, TouchableWithoutFeedback, View, Image } from 'react-native';
+import { StyleSheet, TouchableWithoutFeedback, View, Image, ScrollView } from 'react-native';
 import { Layout, Text, Button, Input, Icon, CheckBox, } from '@ui-kitten/components';
 import { GoogleSignin } from '@react-native-community/google-signin';
 
@@ -78,6 +78,7 @@ const Signin = ({navigation}) => {
 
     if(!user) {
         return (
+            <ScrollView>
             <Layout style={styles.container}>
                 <View style={styles.layout}>
                     <Text style={styles.text} >Sign In</Text>
@@ -101,6 +102,7 @@ const Signin = ({navigation}) => {
                     </View>
                 </View>  
             </Layout>
+            </ScrollView>
         );
     } 
 
@@ -126,7 +128,8 @@ const styles = StyleSheet.create({
     text: {
         color: '#FFFFFF',
         fontSize: 31,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        marginTop: 10
     },
     button: {
         backgroundColor: '#FFFFFF',
@@ -177,7 +180,8 @@ const styles = StyleSheet.create({
     },
     dont_have_account_container: {
         flexDirection: 'row',
-        marginTop: 200
+        marginTop: 100,
+        marginBottom: 150
     },
     dont_have_account_text: {
         color : '#FFFFFF',

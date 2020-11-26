@@ -250,7 +250,7 @@ const ProfileDetails = ({navigation}) => {
             } >
             <View style={styles.container}>
                 <TouchableOpacity onPress={chooseImage}>
-                <Avatar style={styles.avatar} source={{uri: user.photoURL}} />
+                <Avatar style={styles.avatar} source={{uri: user.photoURL ? user.photoURL : 'https://firebasestorage.googleapis.com/v0/b/travelapp-86794.appspot.com/o/icons%2Fprofile.png?alt=media&token=57861e23-e813-4236-9cba-b2a127446d9f'}} />
                 </TouchableOpacity>
                 
                 <Text style={styles.displayName}>{user.displayName}</Text>
@@ -349,7 +349,7 @@ const styles = StyleSheet.create({
         margin: 2,
         marginTop: 10,
         height: 50,
-        width: 170
+        width: 180,
     },
     button: {
         backgroundColor: '#3588E7',
