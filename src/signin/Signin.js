@@ -88,14 +88,14 @@ const Signin = ({navigation}) => {
                     accessoryRight={renderIcon} accessoryLeft={passwordIcon} secureTextEntry={secureTextEntry} onChangeText={(value) => setPassword(value)} />
                     <Text style={styles.forgot_pass} >Forgot Password?</Text>
                     <CheckBox  style={styles.checkbox} checked={checked} onChange={value => setChecked(value)}><Text style={styles.label}>Remember me</Text></CheckBox>
-                    <Button style={styles.button} onPress={Login}>
+                    <Button activeOpacity={0.6} style={styles.button} onPress={Login}>
                         <Text style={styles.login_text}>Login</Text>
                     </Button>
                     <Text style={styles.text_or}>- OR -</Text>
                     <Text style={styles.text_or}>Sign in With</Text>
                     <View style={styles.signin_label}>
-                        <Button style={styles.signin_button} onPress={onGoogleButtonPress} accessoryRight={googleIcon}></Button>
-                        <Button style={styles.signin_button} accessoryRight={facebookIcon}></Button>
+                        <Button activeOpacity={0.6} style={styles.signin_button} onPress={onGoogleButtonPress} accessoryRight={googleIcon}></Button>
+                        <Button activeOpacity={0.6} style={styles.signin_button} accessoryRight={facebookIcon}></Button>
                     </View>
                     <View style={styles.dont_have_account_container}>
                         <Text style={styles.dont_have_account_text}>Don't have an Account? <Text style={styles.signup_text} onPress={() => navigation.navigate('Signup')} >Sign up</Text></Text>

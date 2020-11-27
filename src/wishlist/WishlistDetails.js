@@ -1,9 +1,8 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {View, Text} from 'react-native';
 import firestore from '@react-native-firebase/firestore';
-import { Layout, Divider, Avatar } from '@ui-kitten/components';
 import { FlatList, StyleSheet, TouchableOpacity, Image } from 'react-native';
-import { Rating } from 'react-native-elements';
+import { Rating, Icon } from 'react-native-elements';
 
 const WishlistDetails = ({navigation}) => {
 
@@ -56,11 +55,10 @@ const WishlistDetails = ({navigation}) => {
 
                     <View style={{flexDirection: 'row'}}>
 
-                    <TouchableOpacity  >
-                    <Avatar style={styles.wishlist} 
-                    source={{uri: item.wishlist ? 'https://firebasestorage.googleapis.com/v0/b/travelapp-86794.appspot.com/o/icons%2Fheart.png?alt=media&token=368f4e5b-5139-4b54-b6c1-53d8f30d822c'
-                     : 'https://firebasestorage.googleapis.com/v0/b/travelapp-86794.appspot.com/o/icons%2Fheart-outline.png?alt=media&token=b2e167b5-a284-4f5f-851b-1ddf6f606f1d'}}
-                    />
+                    <Text style={{fontWeight: 'bold', margin: 8}}>{item.visitors} Visitors</Text>
+
+                    <TouchableOpacity>
+                    <Icon style={{marginLeft: 60}} color='#3588E7' name={item.wishlist ? "heart" : "heart-outline"} type="ionicon" />
                     </TouchableOpacity>
                     
                     </View>

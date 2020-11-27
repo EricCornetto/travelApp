@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { View, StyleSheet, TouchableOpacity, ActivityIndicator, FlatList, } from 'react-native';
-import { Text, Divider, Avatar, Input, Icon, Button } from '@ui-kitten/components';
-import { Badge,  Tile, Rating, Image } from 'react-native-elements';
+import { Text, Divider, Avatar, Input, Button } from '@ui-kitten/components';
+import { Badge,  Tile, Rating, Image, Icon } from 'react-native-elements';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import { PagerDotIndicator, IndicatorViewPager,  } from '@shankarmorwal/rn-viewpager';
@@ -14,8 +14,8 @@ const HomeDetails = ({navigation}) => {
     const [loading, setLoading] = useState(true);
     const [, updateState] = useState();
     const [refreshing, setRefreshing] = useState(false);
-    const [isWishlist, setIsWishList] = useState(false);
-
+    const [onSearch, setOnSearch] = useState(false);
+    const [searchVal, setSearchVal] = useState('');
 
     const onRefresh = useCallback(() => {
         setRefreshing(true);
@@ -24,27 +24,57 @@ const HomeDetails = ({navigation}) => {
     });
 
 
-  
+    const searchIcon = (props) => (
+        <TouchableOpacity onPress={() => setOnSearch(true)}>
+        <Icon {...props} name="search-outline" type="ionicon" color='#3588E7' />
+        </TouchableOpacity>
+    );
+    
 
 
     useEffect(() => {
-        const subscriber = firestore()
-        .collection('places')
-        .onSnapshot((querySnapshot) => {
-            const place = [];
 
-            querySnapshot.forEach(documentSnapshot => {
-                place.push({
-                    ...documentSnapshot.data(),
-                    key: documentSnapshot.id,
+        if(onSearch === false) {
+            const subscriber = firestore()
+            .collection('places')
+            .onSnapshot((querySnapshot) => {
+                const place = [];
+
+                querySnapshot.forEach(documentSnapshot => {
+                    place.push({
+                        ...documentSnapshot.data(),
+                        key: documentSnapshot.id,
+                    });
                 });
+
+                setPlaces(place);
+                setLoading(false);
             });
 
-            setPlaces(place);
-            setLoading(false);
-        });
+            return () => subscriber();
 
-        return () => subscriber();
+        } else if (onSearch === true) {
+            const subscriber = firestore()
+            .collection('places')
+            .where('title', '==', searchVal)
+            .onSnapshot((querySnapshot) => {
+                const place = [];
+
+                querySnapshot.forEach(documentSnapshot => {
+                    place.push({
+                        ...documentSnapshot.data(),
+                        key: documentSnapshot.id
+                    });
+                });
+
+                setPlaces(place);
+                setLoading(false);
+            });
+
+            return () => subscriber();
+        }
+
+        
     }, []);
 
 
@@ -96,7 +126,7 @@ const HomeDetails = ({navigation}) => {
                     <Text style={styles.will_you_go_text}>Will you go</Text>
                     <Text style={styles.today_text}>today</Text>
 
-                    <Input style={styles.input} accessoryLeft={searchIcon} placeholder="What would you like to discover?" />
+                    <Input onKeyPress={() => console.log('enter')} style={styles.input} onChangeText={(value) => setSearchVal(value)} accessoryLeft={searchIcon} placeholder="What would you like to discover?" />
                    
                     </View>
                     
@@ -125,6 +155,7 @@ const HomeDetails = ({navigation}) => {
                             >
                             <View style={styles.rating_container}>
                             <Rating readonly imageSize={18}  startingValue={item.rating} />
+                            <Text style={{marginLeft: 8, color: 'gray'}}>({item.rating})</Text>
                             </View>
                             
                             <Text style={styles.sub_header_text}>{item.sub_header}</Text>
@@ -156,13 +187,11 @@ const HomeDetails = ({navigation}) => {
 
                             <View style={{flexDirection: 'row'}}>
 
-                            <TouchableOpacity  >
-                            <Avatar style={styles.wishlist} 
-                            source={{uri: item.wishlist ? 'https://firebasestorage.googleapis.com/v0/b/travelapp-86794.appspot.com/o/icons%2Fheart.png?alt=media&token=368f4e5b-5139-4b54-b6c1-53d8f30d822c'
-                             : 'https://firebasestorage.googleapis.com/v0/b/travelapp-86794.appspot.com/o/icons%2Fheart-outline.png?alt=media&token=b2e167b5-a284-4f5f-851b-1ddf6f606f1d'}}
-                            />
+                            <Text style={{fontWeight: 'bold', margin: 8}}>{item.visitors} Visitors</Text>
+
+                            <TouchableOpacity>
+                            <Icon style={{marginLeft: 60}} color='#3588E7' name={item.wishlist ? "heart" : "heart-outline"} type="ionicon" />
                             </TouchableOpacity>
-                            
                             </View>
                         </View>
                         </View>
@@ -177,9 +206,6 @@ const HomeDetails = ({navigation}) => {
     );
 }
 
-const searchIcon = (props) => (
-    <Icon {...props} name="search" />
-);
 
 const wait = (timeout) => {
     return new Promise(resolve => {
@@ -286,7 +312,8 @@ const styles = StyleSheet.create({
     },
     rating_container: {
         alignSelf: 'flex-start',
-        marginBottom: 10
+        marginBottom: 10,
+        flexDirection: 'row'
     },
     sub_header_text: {
         marginBottom: 20

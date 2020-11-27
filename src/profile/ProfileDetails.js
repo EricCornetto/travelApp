@@ -270,8 +270,8 @@ const ProfileDetails = ({navigation}) => {
                
 
                 <View style={styles.button_layout}>
-                    <Button accessoryLeft={editIcon} style={styles.button_up} onPress={edit ? Save : Edit }>{edit ? "Save" : "Edit"}</Button>
-                    <Button accessoryLeft={emailVerIconButton} style={styles.button_up} onPress={verifyEmail}>Verify Email</Button>
+                    <Button activeOpacity={0.6} accessoryLeft={editIcon} style={styles.button_up} onPress={edit ? Save : Edit }>{edit ? "Save" : "Edit"}</Button>
+                    <Button activeOpacity={0.6} accessoryLeft={emailVerIconButton} style={styles.button_up} onPress={verifyEmail}>Verify Email</Button>
                     
                 </View>
                 
@@ -284,13 +284,13 @@ const ProfileDetails = ({navigation}) => {
                     <Layout style={styles.popover_container}>
                         <Text style={styles.popover_text_header}>Update Password</Text>
                         <Input style={styles.popover_input}  accessoryLeft={passwordIcon} accessoryRight={ToggleIcon} secureTextEntry={securityTextEntry} placeholder="Enter your new password" label={<Text style={styles.popover_label}>New Password</Text>} onChangeText={(value) => setNewPass(value)} />
-                        <Button style={styles.popover_button}>
+                        <Button activeOpacity={0.6} style={styles.popover_button}>
                         <Text style={styles.popover_button_text} onPress={updatePassword}>Save</Text>
                         </Button>
                     </Layout>
                 </Popover>
 
-                <Button style={styles.button} onPress={Logout} accessoryLeft={logoutIcon}>Logout</Button>
+                <Button activeOpacity={0.6} style={styles.button} onPress={Logout} accessoryLeft={logoutIcon}>Logout</Button>
             </View>
             <Divider />
 
