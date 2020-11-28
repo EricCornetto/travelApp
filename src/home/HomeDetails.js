@@ -5,6 +5,7 @@ import { Badge,  Tile, Rating, Image, Icon } from 'react-native-elements';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import { PagerDotIndicator, IndicatorViewPager,  } from '@shankarmorwal/rn-viewpager';
+import { and } from 'react-native-reanimated';
 
 const HomeDetails = ({navigation}) => {
 
@@ -14,8 +15,8 @@ const HomeDetails = ({navigation}) => {
     const [loading, setLoading] = useState(true);
     const [, updateState] = useState();
     const [refreshing, setRefreshing] = useState(false);
-    const [onSearch, setOnSearch] = useState(false);
     const [searchVal, setSearchVal] = useState('');
+    const [searchPlaces, setSearchPlaces] = useState([]);
 
     const onRefresh = useCallback(() => {
         setRefreshing(true);
@@ -25,16 +26,58 @@ const HomeDetails = ({navigation}) => {
 
 
     const searchIcon = (props) => (
-        <TouchableOpacity onPress={() => setOnSearch(true)}>
+        <TouchableOpacity onPress={search}>
         <Icon {...props} name="search-outline" type="ionicon" color='#3588E7' />
         </TouchableOpacity>
     );
+
     
+    const search = useCallback(() => {
+        if(searchVal != ''){
+        const subscriber = firestore()
+        .collection('places')
+        .where('title', '==', searchVal)
+        .onSnapshot((querySnapshot) => {
+            const place = [];
+
+            querySnapshot.forEach(documentSnapshot => {
+                place.push({
+                    ...documentSnapshot.data(),
+                    key: documentSnapshot.id,
+                });
+            });
+
+            setPlaces(place);
+            setLoading(false);
+        });
+        return () => subscriber();
+
+    } else {
+        
+        const subscriber = firestore()
+            .collection('places')
+            .onSnapshot((querySnapshot) => {
+                const place = [];
+
+                querySnapshot.forEach(documentSnapshot => {
+                    place.push({
+                        ...documentSnapshot.data(),
+                        key: documentSnapshot.id,
+                    });
+                });
+
+                setPlaces(place);
+                setLoading(false);
+            });
+
+            return () => subscriber();
+    }
+    });
+
 
 
     useEffect(() => {
 
-        if(onSearch === false) {
             const subscriber = firestore()
             .collection('places')
             .onSnapshot((querySnapshot) => {
@@ -52,27 +95,6 @@ const HomeDetails = ({navigation}) => {
             });
 
             return () => subscriber();
-
-        } else if (onSearch === true) {
-            const subscriber = firestore()
-            .collection('places')
-            .where('title', '==', searchVal)
-            .onSnapshot((querySnapshot) => {
-                const place = [];
-
-                querySnapshot.forEach(documentSnapshot => {
-                    place.push({
-                        ...documentSnapshot.data(),
-                        key: documentSnapshot.id
-                    });
-                });
-
-                setPlaces(place);
-                setLoading(false);
-            });
-
-            return () => subscriber();
-        }
 
         
     }, []);
@@ -104,8 +126,6 @@ const HomeDetails = ({navigation}) => {
         return <ActivityIndicator />;
     }
 
-
-
     return(
          
                 <FlatList  refreshing={refreshing} onRefresh={onRefresh} 
@@ -126,7 +146,7 @@ const HomeDetails = ({navigation}) => {
                     <Text style={styles.will_you_go_text}>Will you go</Text>
                     <Text style={styles.today_text}>today</Text>
 
-                    <Input onKeyPress={() => console.log('enter')} style={styles.input} onChangeText={(value) => setSearchVal(value)} accessoryLeft={searchIcon} placeholder="What would you like to discover?" />
+                    <Input style={styles.input} onChangeText={(value) => setSearchVal(value)} accessoryLeft={searchIcon} placeholder="What would you like to discover?" />
                    
                     </View>
                     
@@ -201,8 +221,7 @@ const HomeDetails = ({navigation}) => {
                     </View>
                     
                 )}
-                
-                />   
+                 />   
     );
 }
 
