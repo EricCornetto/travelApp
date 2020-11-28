@@ -5,7 +5,6 @@ import { Badge,  Tile, Rating, Image, Icon } from 'react-native-elements';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import { PagerDotIndicator, IndicatorViewPager,  } from '@shankarmorwal/rn-viewpager';
-import { and } from 'react-native-reanimated';
 
 const HomeDetails = ({navigation}) => {
 
@@ -16,7 +15,6 @@ const HomeDetails = ({navigation}) => {
     const [, updateState] = useState();
     const [refreshing, setRefreshing] = useState(false);
     const [searchVal, setSearchVal] = useState('');
-    const [searchPlaces, setSearchPlaces] = useState([]);
 
     const onRefresh = useCallback(() => {
         setRefreshing(true);
@@ -254,7 +252,8 @@ const styles = StyleSheet.create({
     },
     item_image: {
         width: 180, 
-        height: 140
+        height: 140,
+        borderRadius: 10
     },
     item_container: {
         flexDirection: 'row', 
@@ -263,7 +262,8 @@ const styles = StyleSheet.create({
     },
     discover_container: {
         backgroundColor: '#FFFFFF',
-        marginBottom: 5
+        marginBottom: 5,
+        borderRadius: 20
     },
     container: {
         flex: 1,
@@ -280,7 +280,7 @@ const styles = StyleSheet.create({
         fontSize: 18,
     },
     pagerStyle: {
-        height: 350
+        height: 350,
       },
     display_name: {
         color: '#FFFFFF',

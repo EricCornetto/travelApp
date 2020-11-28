@@ -102,7 +102,8 @@ const styles = StyleSheet.create({
     },
     item_image: {
         width: 180, 
-        height: 140
+        height: 140,
+        borderRadius: 10
     },
     item_container: {
         flexDirection: 'row', 
@@ -110,7 +111,8 @@ const styles = StyleSheet.create({
     },
     discover_container: {
         backgroundColor: '#FFFFFF',
-        marginBottom: 5
+        marginBottom: 5,
+        borderRadius: 20
     },
 })
 

@@ -125,23 +125,7 @@ const PlaceDetails = ({route,navigation}) => {
             
 
                 
-
-                <Text style={{margin: 10, fontSize: 31, fontWeight: '800'}}>People</Text>
-                <Text style={{margin: 10}}>No. of people in your group</Text>
-
                 
-                   <RadioGroup  style={{flexDirection: 'row', margin: 10,}}
-                   selectedIndex={selectedIndex}
-                   onChange={index => setSelectedIndex(index)}>
-                       {
-                           people.map((number,i) => (
-                               <Radio key={i}>{number}</Radio>
-                           ))
-                       }
-
-                   </RadioGroup>
-                
-                <Text style={{margin: 10, fontSize: 31, fontWeight: '800'}}>Description</Text>
                 <Text style={styles.content}>{item.content}</Text>
          
                 
@@ -158,12 +142,12 @@ const PlaceDetails = ({route,navigation}) => {
                     <ScrollView>
                     <ImageBackground style={{width: 300, height: 200}} source={{uri: item.photo}}></ImageBackground>
                     <View style={{flexDirection: 'row',}}>
-                        <Icon style={{marginTop: 10, marginLeft: 20}} name="flight-takeoff" />
+                        <Icon size={50} style={{marginTop: 10, marginLeft: 2, bottom: 10}} name="flight-takeoff" />
                         <View style={{flexDirection: 'column', margin: 5}}>
                             <Text>Departure</Text>
                             <Text>{item.departure}</Text>
                         </View>
-                        <Icon style={{marginTop: 10, marginLeft: 50}} name="flight-land" />
+                        <Icon size={50} style={{marginTop: 10, marginLeft: 50, bottom: 10}} name="flight-land" />
                         <View style={{flexDirection: 'column', margin: 5}}>
                             <Text>Arrive</Text>
                             <Text>{item.arrival}</Text>
@@ -302,7 +286,8 @@ const styles = StyleSheet.create({
         marginTop: 2
     },
     content: {
-        textAlign: 'justify'
+        textAlign: 'justify',
+        marginTop: 10
     },
     avatar: {
         width: 30, 

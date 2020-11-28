@@ -350,11 +350,13 @@ const styles = StyleSheet.create({
         marginTop: 10,
         height: 50,
         width: 180,
+        borderColor: '#3588E7'
     },
     button: {
         backgroundColor: '#3588E7',
         marginTop: 5,
-        marginLeft: 7
+        marginLeft: 7,
+        borderColor: '#3588E7'
     },
     popover_container: {
         flex: 1,
