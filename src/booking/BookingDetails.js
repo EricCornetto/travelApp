@@ -67,8 +67,8 @@ const BookingDetails = () => {
                  <Text style={{fontSize: 20, fontWeight: 'bold', margin: 10}}>Flight</Text>
 
                  {
-                     flightBook.map((item) => (
-                        <View style={{flexDirection: 'row', margin: 10}}>
+                     flightBook.map((item,i) => (
+                        <View key={i} style={{flexDirection: 'row', margin: 10}}>
                         <Image style={{width: 200, height: 100}} source={{uri: item.photo}} />
                         <View style={{flexDirection: 'column'}}>
                             <Text style={{fontWeight: 'bold', margin: 10}}>{item.title} Flight</Text>
