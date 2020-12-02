@@ -69,7 +69,7 @@ const BookingList = ({navigation}) => {
         
                  {
                      flightBook.map((item,i) => (
-                         <TouchableOpacity key={i} onPress={() => navigation.push('Booking Details', {item: item})}>
+                         <TouchableOpacity key={i}>
                         <View  style={{flexDirection: 'row', margin: 5, backgroundColor: '#FFFFFF', borderRadius: 10}}>
                         <Image style={{width: 200, height: 100, borderRadius: 10}} source={{uri: item.photo}} />
                         <View style={{flexDirection: 'column'}}>
