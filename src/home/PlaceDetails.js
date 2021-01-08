@@ -1,8 +1,9 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { View, StyleSheet, ScrollView, Image, RefreshControl, ImageBackground, Alert, } from 'react-native';
-import { Layout, Text, Radio, RadioGroup, Button, Divider  } from '@ui-kitten/components'
+import { Layout, Text,  Button, Divider  } from '@ui-kitten/components'
 import { Rating, Icon, Overlay,   } from 'react-native-elements';
 import firestore from '@react-native-firebase/firestore';
+import auth from '@react-native-firebase/auth';
 
 const PlaceDetails = ({route,navigation}) => {
 
@@ -12,10 +13,8 @@ const PlaceDetails = ({route,navigation}) => {
     const [wishlist, setWishlist] = useState(false);
     const [isFlightBook, setIsFlightBook] = useState(false);
     const [isHotelBook, setIsHotelBook] = useState(false);
-    const [selectedIndex, setSelectedIndex] = useState(0)
     const [visible, setVisible] = useState(false);
 
-    const people = [1,2,3,4,5];
 
     const toggleOverlay = () => {
         setVisible(!visible);
@@ -74,6 +73,8 @@ const PlaceDetails = ({route,navigation}) => {
             })
 
     }
+
+    console.log(item.country);
 
     function updateFlightBook() {
         firestore()

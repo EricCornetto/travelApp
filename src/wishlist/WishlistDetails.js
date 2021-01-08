@@ -2,7 +2,7 @@ import React, {useCallback, useEffect, useState} from 'react';
 import {View, Text} from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import { FlatList, StyleSheet, TouchableOpacity, Image } from 'react-native';
-import { Rating, Icon } from 'react-native-elements';
+import { Icon } from 'react-native-elements';
 
 const WishlistDetails = ({navigation}) => {
 
@@ -11,13 +11,15 @@ const WishlistDetails = ({navigation}) => {
     const [refreshing, setRefreshing] = useState(false)
     const [, updateState] = useState();
 
+
     const onRefresh = useCallback(() => {
         setRefreshing(true);
         updateState;
         wait(2000).then(() => setRefreshing(false))
     })
 
-    useEffect(() => {
+    useEffect(() => {   
+
         const subscriber = firestore()
         .collection('places')
         .where('wishlist','==',true)
@@ -37,6 +39,7 @@ const WishlistDetails = ({navigation}) => {
 
         return () => subscriber();
     }, [])
+
 
     return(
         <FlatList refreshing={refreshing} onRefresh={onRefresh}
