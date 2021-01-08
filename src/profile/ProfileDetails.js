@@ -4,8 +4,8 @@ import { View, StyleSheet, Alert, TouchableWithoutFeedback, TouchableOpacity, Sc
 import auth from '@react-native-firebase/auth';
 import storage from '@react-native-firebase/storage';
 import ImagePicker from 'react-native-image-picker';
-
-
+import firestore from '@react-native-firebase/firestore';
+import { cos } from 'react-native-reanimated';
 
 
 const ProfileDetails = ({navigation}) => {
@@ -36,6 +36,14 @@ const ProfileDetails = ({navigation}) => {
             photoURL: url
         }).then(() => {
             console.log('Update Profile Successfull');
+            firestore()
+                .collection('photo')
+                .add({
+                    photo_url: url
+                })
+                .then(() => {
+                    console.log('Photo added')
+                })
         })
     }
 
@@ -208,12 +216,19 @@ const ProfileDetails = ({navigation}) => {
 
         const options = {
             title: 'Select Photo',
+            customButtons: [
+                {
+                    name: 'customOptionKey',
+                    title: 'Delete Photo'
+                }
+            ],
             cameraType: 'front',
             mediaType: 'photo',
             storageOptions: {
                 skipBackup: true,
             },
             path: 'images',
+            
         };
     
         ImagePicker.showImagePicker(options, (response) => {
@@ -224,8 +239,28 @@ const ProfileDetails = ({navigation}) => {
             } else if (response.error) {
                 console.log('ImagePicker Error: ', response.error);
             } else if (response.customButton) {
-                console.log('User tapped custom button : ', response.customButton);
-                alert(response.customButton);
+                
+                firestore()
+                    .collection('photo')
+                    .where('photo_url','==',user.photoURL)
+                    .get()
+                    .then(querySnapshot => {
+                
+                        querySnapshot.forEach(documentSnapshot => {
+                            documentSnapshot.ref.delete();
+                        })
+
+                        user.updateProfile({
+                            photoURL: null
+                        }).then(() => {
+                            console.log('Photo delete')
+                        })
+                    })
+
+                
+                
+                
+
             } else {
                 filePath = response.path;
                 fileName = response.fileName;

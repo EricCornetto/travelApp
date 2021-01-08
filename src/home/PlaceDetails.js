@@ -3,7 +3,6 @@ import { View, StyleSheet, ScrollView, Image, RefreshControl, ImageBackground, A
 import { Layout, Text,  Button, Divider  } from '@ui-kitten/components'
 import { Rating, Icon, Overlay,   } from 'react-native-elements';
 import firestore from '@react-native-firebase/firestore';
-import auth from '@react-native-firebase/auth';
 
 const PlaceDetails = ({route,navigation}) => {
 
