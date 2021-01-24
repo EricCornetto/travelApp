@@ -3,14 +3,24 @@ import {View, Text} from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import { FlatList, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { Icon } from 'react-native-elements';
+import auth from '@react-native-firebase/auth';
+import { Overlay } from 'react-native-elements';
+import { ImageBackground } from 'react-native';
 
 const WishlistDetails = ({navigation}) => {
 
     const [wishlisted, setWishListed] = useState([]);
     const [loading, setLoading] = useState(true)
     const [refreshing, setRefreshing] = useState(false)
+    const [visible, setVisible] = useState(false);
     const [, updateState] = useState();
 
+
+    const user = auth().currentUser;
+
+    const toggleOverlay = () => {
+        setVisible(!visible)
+    }
 
     const onRefresh = useCallback(() => {
         setRefreshing(true);
@@ -18,58 +28,55 @@ const WishlistDetails = ({navigation}) => {
         wait(2000).then(() => setRefreshing(false))
     })
 
-    useEffect(() => {   
-
-        const subscriber = firestore()
-        .collection('places')
-        .where('wishlist','==',true)
-        .onSnapshot((querySnapshot) => {
-            const place = [];
+   useEffect(() => {
+       const subscriber = firestore()
+        .collection('wishlist')
+        .where('user_id', '==', user.email)
+        .onSnapshot(querySnapshot => {
+            const wish = [];
 
             querySnapshot.forEach(documentSnapshot => {
-                place.push({
+                wish.push({
                     ...documentSnapshot.data(),
                     key: documentSnapshot.id,
                 });
             });
 
-            setWishListed(place)
-            setLoading(false)
+            setWishListed(wish)
         })
 
         return () => subscriber();
-    }, [])
+   }, [])
+
 
 
     return(
         <FlatList refreshing={refreshing} onRefresh={onRefresh}
         data={wishlisted} renderItem={({item}) => (
             <View style={styles.discover_container}>
-            <TouchableOpacity onPress={() => navigation.push('PlaceDetails', {item})}>
+            <TouchableOpacity onPress={() => navigation.push("Booking Hotel And Flight", {item})}>
             <View style={styles.item_container}>
-                <Image style={styles.item_image} source={{uri: item.photo}} />
-                <View style={{flexDirection: 'column'}}>
-                    <View style={{flexDirection: 'row'}}>
-                        <Text style={styles.item_title}>{item.title}</Text>
-                        <Image style={styles.item_flag} source={{uri: item.flag}} />
-                    </View>
-                    
-                    <Text style={styles.sub_header}>{item.sub_header}</Text>
+                <ImageBackground imageStyle={styles.item_image} style={styles.item_image} source={{uri: item.image}}> 
+
+                
+                    <Text style={styles.item_title}>{item.title}</Text>
+    
 
                     <View style={{flexDirection: 'row'}}>
 
-                    <Text style={{fontWeight: 'bold', margin: 8}}>{item.visitors} Visitors</Text>
-
-                    <TouchableOpacity>
-                    <Icon style={{marginLeft: 60}} color='#3588E7' name={item.wishlist ? "heart" : "heart-outline"} type="ionicon" />
+                    <TouchableOpacity >
+                    <Icon style={{marginLeft: '90%', marginTop: '15%'}} color='#3588E7' name="heart" type="ionicon" />
                     </TouchableOpacity>
                     
-                    </View>
+                  
                 </View>
+
+                </ImageBackground>
+                
                 </View>
             
             </TouchableOpacity>
-           
+
             </View>          
         )}>
 
@@ -102,9 +109,11 @@ const styles = StyleSheet.create({
     item_title: {
         marginLeft: 10, 
         fontWeight: 'bold',
+        fontSize: 30,
+        color: '#fff'
     },
     item_image: {
-        width: 180, 
+        width: 400, 
         height: 140,
         borderRadius: 10
     },

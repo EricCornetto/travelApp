@@ -1,7 +1,7 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import WishlistDetails from './WishlistDetails';
-import PlaceDetails from '../home/PlaceDetails';
+import BookingHotelAndFlight from '../booking/BookingHotelAndFlight';
 
 const Wishlist = () => {
     
@@ -10,7 +10,7 @@ const Wishlist = () => {
     return(
         <Stack.Navigator>
             <Stack.Screen name="Wishlist Details" component={WishlistDetails} options={settings} />
-            <Stack.Screen name="PlaceDetails" component={PlaceDetails} options={settingsPlaces}/>
+            <Stack.Screen name="Booking Hotel And Flight" component={BookingHotelAndFlight} options={booking} />
         </Stack.Navigator>
     );
 
@@ -28,7 +28,7 @@ const settings = {
     headerLeft: null,
 }
 
-const settingsPlaces = {
+const booking = {
     headerStyle: {
         backgroundColor: "#3588E7",
     },
@@ -36,8 +36,7 @@ const settingsPlaces = {
     headerTitleStyle: {
         fontWeight: 'bold'
     },
-    title: 'Place Details',
-    headerTransparent: true
+    title: 'Booking Hotel And Flight',
 }
 
 export default Wishlist;

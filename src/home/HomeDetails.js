@@ -16,6 +16,7 @@ const HomeDetails = ({navigation}) => {
     const [refreshing, setRefreshing] = useState(false);
     const [searchVal, setSearchVal] = useState('');
 
+
     const onRefresh = useCallback(() => {
         setRefreshing(true);
         updateState();
@@ -205,11 +206,9 @@ const HomeDetails = ({navigation}) => {
 
                             <View style={{flexDirection: 'row'}}>
 
-                            <Text style={{fontWeight: 'bold', margin: 8}}>{item.visitors} Visitors</Text>
+                            
 
-                            <TouchableOpacity>
-                            <Icon style={{marginLeft: 60}} color='#3588E7' name={item.wishlist ? "heart" : "heart-outline"} type="ionicon" />
-                            </TouchableOpacity>
+                            
                             </View>
                         </View>
                         </View>
