@@ -8,6 +8,3 @@ Mobile application for travel guides
  - Turn on your android emulator
  - npx react-native run-android
 
-# Testing Account
- - email : putrapurnawa@gmail.com
- - pass : helloworld123
